@@ -46,5 +46,38 @@ const tempWatchedData = [
 ];
 
 export default function App() {
-  return <h1>Watchopia</h1>;
+  return <NavBar />;
+}
+
+function NavBar() {
+  return (
+    <>
+      <Logo />
+      <Search />
+      <NumResults />
+    </>
+  );
+}
+
+function Logo() {
+  return (
+    <div className="logo">
+      <span role="img">🎦</span>
+      <h1>Watchopia</h1>
+    </div>
+  );
+}
+
+function Search() {
+  return (
+    <input className="search" type="text" placeholder="Search movies..." />
+  );
+}
+
+function NumResults() {
+  return (
+    <p className="num-results">
+      Found <strong>X</strong> results
+    </p>
+  );
 }
