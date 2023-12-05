@@ -56,20 +56,26 @@ export default function App() {
 
   return (
     <>
-      <NavBar movies={movies} />
-      <Main movies={movies} watched={watched} />
+      <NavBar>
+        <Logo />
+        <Search />
+        <NumResults movies={movies} />
+      </NavBar>
+      <Main>
+        <MovieListBox>
+          <MovieList movies={movies} />
+        </MovieListBox>
+        <WatchedBox>
+          <WatchedSummary watched={watched} />
+          <WatchedMoviesList watched={watched} />
+        </WatchedBox>
+      </Main>
     </>
   );
 }
 
-function NavBar({ movies }) {
-  return (
-    <>
-      <Logo />
-      <Search />
-      <NumResults movies={movies} />
-    </>
-  );
+function NavBar({ children }) {
+  return <nav className="nav-bar">{children}</nav>;
 }
 
 function Logo() {
@@ -103,16 +109,11 @@ function NumResults({ movies }) {
   );
 }
 
-function Main({ movies, watched }) {
-  return (
-    <main className="main">
-      <MovieListBox movies={movies} />
-      <WatchedBox watched={watched} />
-    </main>
-  );
+function Main({ children }) {
+  return <main className="main">{children}</main>;
 }
 
-function MovieListBox({ movies }) {
+function MovieListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -123,7 +124,7 @@ function MovieListBox({ movies }) {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList movies={movies} />}
+      {isOpen1 && children}
     </div>
   );
 }
@@ -153,7 +154,7 @@ function Movie({ movie }) {
   );
 }
 
-function WatchedBox({ watched }) {
+function WatchedBox({ children }) {
   const [isOpen2, setIsOpen2] = useState(true);
 
   return (
@@ -164,12 +165,7 @@ function WatchedBox({ watched }) {
       >
         {isOpen2 ? "–" : "+"}
       </button>
-      {isOpen2 && (
-        <>
-          <WatchedSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
-        </>
-      )}
+      {isOpen2 && children}
     </div>
   );
 }
