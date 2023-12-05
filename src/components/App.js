@@ -82,8 +82,16 @@ function Logo() {
 }
 
 function Search() {
+  const [query, setQuery] = useState("");
+
   return (
-    <input className="search" type="text" placeholder="Search movies..." />
+    <input
+      className="search"
+      type="text"
+      placeholder="Search movies..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
   );
 }
 
@@ -105,10 +113,17 @@ function Main({ movies, watched }) {
 }
 
 function MovieListBox({ movies }) {
+  const [isOpen1, setIsOpen1] = useState(true);
+
   return (
     <div className="box">
-      <button className="btn-toggle"></button>
-      <MovieList movies={movies} />
+      <button
+        className="btn-toggle"
+        onClick={() => setIsOpen1((open) => !open)}
+      >
+        {isOpen1 ? "–" : "+"}
+      </button>
+      {isOpen1 && <MovieList movies={movies} />}
     </div>
   );
 }
@@ -139,11 +154,22 @@ function Movie({ movie }) {
 }
 
 function WatchedBox({ watched }) {
+  const [isOpen2, setIsOpen2] = useState(true);
+
   return (
     <div className="box">
-      <button className="btn-toggle"></button>
-      <WatchedSummary watched={watched} />
-      <WatchedMoviesList watched={watched} />
+      <button
+        className="btn-toggle"
+        onClick={() => setIsOpen2((open) => !open)}
+      >
+        {isOpen2 ? "–" : "+"}
+      </button>
+      {isOpen2 && (
+        <>
+          <WatchedSummary watched={watched} />
+          <WatchedMoviesList watched={watched} />
+        </>
+      )}
     </div>
   );
 }
