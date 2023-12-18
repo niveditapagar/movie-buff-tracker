@@ -3,13 +3,18 @@ import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
 import { KEY } from "./App";
 
-export default function MovieDetails({ selectedId, onCloseMovie }) {
+export default function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const {
     Title: title,
+    Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
@@ -19,6 +24,19 @@ export default function MovieDetails({ selectedId, onCloseMovie }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+    };
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
+  }
 
   useEffect(
     function () {
@@ -76,6 +94,11 @@ export default function MovieDetails({ selectedId, onCloseMovie }) {
             </div>
           </header>
           <section>
+            <div className="rating">
+              <button className="btn-add" onClick={handleAdd}>
+                Add to list
+              </button>
+            </div>
             <p>
               <em>{plot}</em>
             </p>
