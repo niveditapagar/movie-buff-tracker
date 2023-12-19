@@ -14,14 +14,12 @@ const KEY = "80507edb";
 export { KEY };
 
 export default function App() {
-  const tempQuery = "interstellar";
-  const tempId = "tt0816692";
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState(tempQuery);
-  const [selectedId, setSelectedId] = useState(tempId);
+  const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -61,6 +59,7 @@ export default function App() {
           setError("");
         } catch (err) {
           if (err.name !== "AbortError") {
+            console.log(err.message);
             setError(err.message);
           }
         } finally {
@@ -72,6 +71,7 @@ export default function App() {
         setError("");
         return;
       }
+      handleCloseMovie();
       fetchMovies();
 
       return function () {
