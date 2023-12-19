@@ -6,6 +6,7 @@ import { KEY } from "./App";
 
 export default function MovieDetails({
   selectedId,
+  watched,
   onCloseMovie,
   onAddWatched,
 }) {
@@ -13,6 +14,11 @@ export default function MovieDetails({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState("");
+
+  const isWatched = watched.map((mov) => mov.imdbID).includes(selectedId);
+  const watchedUserRating = watched.find(
+    (mov) => mov.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -35,6 +41,7 @@ export default function MovieDetails({
       poster,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
+      userRating,
     };
     onAddWatched(newWatchedMovie);
     onCloseMovie();
@@ -97,15 +104,21 @@ export default function MovieDetails({
           </header>
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={24}
-                onSetRating={setUserRating}
-              />
-              {userRating > 0 && (
-                <button className="btn-add" onClick={handleAdd}>
-                  Add to list
-                </button>
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      Add to List
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>You rated this movie {watchedUserRating}</p>
               )}
             </div>
             <p>
