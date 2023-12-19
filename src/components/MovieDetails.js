@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
+import StarRating from "./StarRating";
 import { KEY } from "./App";
 
 export default function MovieDetails({
@@ -11,6 +12,7 @@ export default function MovieDetails({
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [userRating, setUserRating] = useState("");
 
   const {
     Title: title,
@@ -95,9 +97,16 @@ export default function MovieDetails({
           </header>
           <section>
             <div className="rating">
-              <button className="btn-add" onClick={handleAdd}>
-                Add to list
-              </button>
+              <StarRating
+                maxRating={10}
+                size={24}
+                onSetRating={setUserRating}
+              />
+              {userRating > 0 && (
+                <button className="btn-add" onClick={handleAdd}>
+                  Add to list
+                </button>
+              )}
             </div>
             <p>
               <em>{plot}</em>
